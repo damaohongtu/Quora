@@ -13,7 +13,9 @@ A novel neural network architecture based on a self-attention mechanism
 ### (6)模型的ensemble
 ## 3.创新(for paper)
 
-:boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: 
+:boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: 
 ## TO DO LIST
 - 去掉标点符号
 - 处理拼写错误的词,处理美式英语和英式英语
+
+                 :boat: 
