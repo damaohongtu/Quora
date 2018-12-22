@@ -7,6 +7,8 @@
 ### (1)CNN
 ### (2)LSTM,GRU
 ### (3)Attention机制
-### (4)模型的融合
-### (5)模型的ensemble
+### (4)Transformer
+A novel neural network architecture based on a self-attention mechanism
+### (5)模型的融合
+### (6)模型的ensemble
 ## 3.创新(for paper)
