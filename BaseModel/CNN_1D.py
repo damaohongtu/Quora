@@ -13,23 +13,24 @@ from tqdm import tqdm
 import math
 from sklearn.model_selection import train_test_split
 from keras.regularizers import l1_l2
+import pickle
+import tensorflow as tf
+from keras.backend.tensorflow_backend import set_session
+config = tf.ConfigProto()
+config.gpu_options.allocator_type = 'BFC' #A "Best-fit with coalescing" algorithm, simplified from a version of dlmalloc.
+config.gpu_options.per_process_gpu_memory_fraction = 0.3
+config.gpu_options.allow_growth = True
+set_session(tf.Session(config=config))
 
 # --------------------------Embedding part-----------------------------
-train_df = pd.read_csv("../../Qura_data/train.csv")
-train_df, val_df = train_test_split(train_df, test_size=0.1, random_state=28)
+train_df = pd.read_csv("../../Qura_data/train_clean.csv")
+test_df = pd.read_csv("../../Qura_data/test_clean.csv")
 
-embeddings_index = {}
-f = open('../../Qura_data/embeddings/glove.840B.300d/glove.840B.300d.txt')
+train_df, val_df = train_test_split(train_df, test_size=0.1, random_state=2018)
 
-# 粗暴将embedding结果解析到字典中,解析时间大约两分钟
-for line in tqdm(f):
-    values = line.split(" ")
-    word = values[0]
-    coefs = np.asarray(values[1:], dtype='float32')
-    embeddings_index[word] = coefs
-f.close()
-
-print('Found %s word vectors.' % len(embeddings_index))
+embeddings_index=None
+with open("../../Qura_data/glove.pickle",'rb') as f:
+    embeddings_index = pickle.load(f)
 #-----------------------------------------------------------------------
 
 
@@ -38,9 +39,12 @@ print('Found %s word vectors.' % len(embeddings_index))
 def text_to_array(text):
     empyt_emb = np.zeros(300)
     # 这里仅仅使用了每一个问题的前30个单词!
-    text = text[:-1].split()[:30]
+    text = text[:-1].split()[:72]
+
+    # 没有在字典中的词语直接使用了300维的[0,0...,0]向量代替
     embeds = [embeddings_index.get(x, empyt_emb) for x in text]
-    embeds+= [empyt_emb] * (30 - len(embeds))
+    # 长度不够72个单词的也使用[0,0...,0]向量代替
+    embeds+= [empyt_emb] * (72 - len(embeds))
     return np.array(embeds)
 #------------------------------------------------------------------------
 
@@ -49,7 +53,7 @@ val_y = np.array(val_df["target"][:3000])
 
 # Data providers
 batch_size = 128
-input_shape=(30,300)
+input_shape=(72,300)
 nb_filters=64
 kernel_size=3
 
@@ -121,7 +125,7 @@ def batch_gen(test_df):
         text_arr = np.array([text_to_array(text) for text in texts])
         yield text_arr
 
-test_df = pd.read_csv("../../Qura_data/test.csv")
+
 
 all_preds = []
 for x in tqdm(batch_gen(test_df)):

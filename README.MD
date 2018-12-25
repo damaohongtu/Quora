@@ -11,11 +11,16 @@
 A novel neural network architecture based on a self-attention mechanism
 ### (5)模型的融合
 ### (6)模型的ensemble
-## 3.创新(for paper)
+
+## 3.总体的方略
+- 在同一个baseline上更新预处理的方案,在预处理效果提升的情况下,优化模型
+
+## 4.创新(for paper)
 
 :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: :boat: 
 ## TO DO LIST
-- 去掉标点符号
+- 去掉标点符号(ok)
 - 处理拼写错误的词,处理美式英语和英式英语
+- 处理out-of-bag问题
 
-                 :boat: 
+
